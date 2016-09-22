@@ -29,6 +29,8 @@ public class Entities {
     static final int codepointRadix = 36;
 
     public enum EscapeMode {
+        /** do not escape anything */
+        none(null, 0),
         /** Restricted entities suitable for XHTML output: lt, gt, amp, and quot only. */
         xhtml("entities-xhtml.properties", 4),
         /** Default HTML output entities. */
@@ -170,6 +172,10 @@ public class Entities {
                     reachedNonWhite = true;
                 }
             }
+            if (escapeMode == EscapeMode.none) {
+              accum.append((char) codePoint);
+              continue;
+            }
             // surrogate pairs, split implementation for efficiency on single char common case (saves creating strings, char[]):
             if (codePoint < Character.MIN_SUPPLEMENTARY_CODE_POINT) {
                 final char c = (char) codePoint;
@@ -284,6 +290,9 @@ public class Entities {
         e.codeKeys = new int[size];
         e.nameVals = new String[size];
 
+        if (file == null) {
+          return;
+        }
         InputStream stream = Entities.class.getResourceAsStream(file);
         if (stream == null)
             throw new IllegalStateException("Could not read resource " + file + ". Make sure you copy resources for " + Entities.class.getCanonicalName());

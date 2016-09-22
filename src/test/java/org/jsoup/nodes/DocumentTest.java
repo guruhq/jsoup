@@ -68,6 +68,10 @@ public class DocumentTest {
 
         doc.outputSettings().escapeMode(Entities.EscapeMode.extended);
         assertEquals("<p title=\"&pi;\">&pi; &amp; &lt; &gt; </p>", doc.body().html());
+    
+        doc.outputSettings().escapeMode(Entities.EscapeMode.none);
+        assertEquals("<p title=\"π\">π & < > </p>", doc.body().html());
+        
     }
 
     @Test public void testXhtmlReferences() {
