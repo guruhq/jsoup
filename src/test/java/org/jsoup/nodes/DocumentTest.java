@@ -72,6 +72,10 @@ public class DocumentTest {
         doc.outputSettings().escapeMode(Entities.EscapeMode.none);
         assertEquals("<p title=\"π\">π & < > </p>", doc.body().html());
         
+        doc = Jsoup.parse("\ud83d\ude2c\\n\\n\ud83d\ude24");
+        doc.outputSettings().escapeMode(Entities.EscapeMode.none);
+        System.out.println(doc.body().html());
+        
     }
 
     @Test public void testXhtmlReferences() {
